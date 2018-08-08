@@ -206,14 +206,14 @@ const getOutOfTheForLoop = function(dataA, dataB, count, cb) {
 console.log(A,B)
 
 
-handleLevelFive('Ashby', 'Colma', () => {console.log('hi');});
+//handleLevelFive('Ashby', 'Colma', () => {console.log('hi');});
 
 //tests to check if the methods are working
-//getAllLines(() => console.log('getAllLines working'))
-//getAllStops(5, () => console.log('getAllStops working'))
-//checkCurrentFavs('2', () => console.log('checkCurrentFavs working'))
-//getAllStations(() => console.log('getAllStations working'))
-//getConnectingLines('Ashby', () => console.log('getConnectingLines working'))
+  //getAllLines(() => console.log('getAllLines working'))
+  //getAllStops(5, () => console.log('getAllStops working'))
+  //checkCurrentFavs('2', () => console.log('checkCurrentFavs working'))
+  //getAllStations(() => console.log('getAllStations working'))
+  //getConnectingLines('Ashby', () => console.log('getConnectingLines working'))
 
 module.exports = {
   getAllLines,
