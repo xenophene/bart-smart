@@ -94,7 +94,6 @@ const getAllStations = function(callback) {
   });
 };
 
-
 //Input = (station_name_A, station_name_B)
 //Get all lines info 'for both stations
 //Check if the lines have the same destination
@@ -105,108 +104,20 @@ const getAllStations = function(callback) {
 //call function recursively
 //Now Input = (transfer_station, station_name_B)
 
-const handleLevelFive = function(A, B, cb) {      
+const handleLevelFive = function(station, cb) {  
+  var arr = [station]  
 
-  const allLineInfo = function(station_name) {
-
-    connection.query('select stations.id from stations where stations.name=?;', [station_name], (err, dataA) => {
-
-      var obj= {
-        station_id : null,
-        lines_id : [],
-        lines_name : null,
-        lines_color : null,
-        transits: null,
-        destinations_id : null,
-        destinations_station_name : null
-      };  
-
-      for (var key in dataA) {
-        obj.station_id = dataA[key].id;
-      }
-      //Lines Id
-      connection.query('select stops.line_id from stops inner join stations where stations.id=stops.station_id and stations.id=?;', [obj.station_id], (err, dataA) => {
-        var arr = [];
-        for (var key in dataA) {
-          arr.push(dataA[key].line_id);
-        }
-        obj.lines_id = arr;
-      
-        var array = [];
-        for (var i=0; i<obj.lines_id.length; i++) {
-          connection.query('select id, name, color, destination_id, origin_id from service_lines where service_lines.id =?;', [obj.lines_id[i]], (err, dataA) => {
-          
-            cantThinkOfAnyOtherWayToDoThis(dataA, B, cb); 
-          });
-        }
-      });
-    });
-  };
-  allLineInfo(A);
+  connection.query('select stations.id as station_ID, service_lines.id as line_ID, origin_id, destination_id, color, service_lines.name as line_name from stops inner join service_lines on service_lines.id = stops.station_id inner join stations on stations.name = ?;', arr, (err, data) => {
+    if (err) {
+      console.log('Error on mySql syntax')
+    } else {
+      console.log('Succesfully fetched data for level5')
+      cb(null, data)
+      console.log(data)
+    }
+  })
 };
 
-const cantThinkOfAnyOtherWayToDoThis = function (dataA, B, cb) {
-
-  const allLineInfo = function(dataA, station_name, cb) {
-
-    connection.query('select stations.id from stations where stations.name=?;', [station_name], (err, dataB) => {
-
-      var obj= {
-        station_id : null,
-        lines_id : [],
-        lines_name : null,
-        lines_color : null,
-        transits: null,
-        destinations_id : null,
-        destinations_station_name : null
-      };  
-
-      for (var key in dataB) {
-        obj.station_id = dataB[key].id;
-      }
-      //Lines Id
-      connection.query('select stops.line_id from stops inner join stations where stations.id=stops.station_id and stations.id=?;', [obj.station_id], (err, dataB) => {
-        var arr = [];
-        for (var key in dataB) {
-          arr.push(dataB[key].line_id);
-        }
-        obj.lines_id = arr;
-      
-        var array = [];
-        for (var i=0; i<obj.lines_id.length; i++) {
-          var count = obj.lines_id.length;
-          connection.query('select id, name, color, destination_id, origin_id from service_lines where service_lines.id =?;', ['obj.lines_id[i]'], (err, dataB) => {
-            if (err) {
-              console.log(err);
-            } else {
-              getOutOfTheForLoop(dataA, dataB, count, cb);
-            }
-          });
-        }
-      });
-    });
-  };
-  allLineInfo(dataA, B, cb);
-};
-
-//My last query is inside of a for loop and having the callback within 
-//the foorloop responses to the server 4 times and outside of the foor loop
-//I dont gave access to my data since its outside of the query success
-//So im handling the number of loops here
-
-var counter = 1;
-var A = [];
-var B = [];
-
-const getOutOfTheForLoop = function(dataA, dataB, count, cb) {
-  cb(null, 'hi','bye')
-};
-
-
-console.log(A,B)
-
-
-//handleLevelFive('Ashby', 'Colma', () => {console.log('hi');});
 
 //tests to check if the methods are working
   //getAllLines(() => console.log('getAllLines working'))
@@ -214,6 +125,7 @@ console.log(A,B)
   //checkCurrentFavs('2', () => console.log('checkCurrentFavs working'))
   //getAllStations(() => console.log('getAllStations working'))
   //getConnectingLines('Ashby', () => console.log('getConnectingLines working'))
+  handleLevelFive('Berkeley',  () => {console.log('hi');});
 
 module.exports = {
   getAllLines,
