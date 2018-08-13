@@ -69,13 +69,16 @@ class TripPlanner extends React.Component {
     return (
     <div className="trip-planner-view">
       <div className="selections">
+      
         Start: 
         <select
           onChange={this.handleStartPoint.bind(this)}>
           {this.state.allStations.map( (station, index) =>
             <option 
               key={index}
-              value={station.name}>
+              value={station.name}
+              name={station.id}
+              >
                 {station.name}
             </option> 
           )}
@@ -89,7 +92,9 @@ class TripPlanner extends React.Component {
           {this.state.allStations.map( (station, index) =>
             <option 
               key={index}
-              value={station.name}>
+              value={station.name}
+              name ={station.id}
+              >
                 {station.name}
             </option> 
           )}

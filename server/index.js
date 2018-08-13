@@ -70,11 +70,11 @@ app.get('/api/stations', (req, res) => {
 app.get('/api/connections/:start/:end', (req,res) => {
   var start = req.params.start
   var end = req.params.end
-  db.handleLevelFive(start, end, (err, dataA, dataB) => {
+  db.handleLevelFive(start, (err, data) => {
     if (err) {
       console.log('Error handling level five', err)
     } else {
-      res.send(dataA + dataB)
+      res.send(data)
     }
   })
 })

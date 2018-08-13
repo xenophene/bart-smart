@@ -104,16 +104,16 @@ const getAllStations = function(callback) {
 //call function recursively
 //Now Input = (transfer_station, station_name_B)
 
-const handleLevelFive = function(station, cb) {  
-  var arr = [station]  
-
-  connection.query('select stations.id as station_ID, service_lines.id as line_ID, origin_id, destination_id, color, service_lines.name as line_name from stops inner join service_lines on service_lines.id = stops.station_id inner join stations on stations.name = ?;', arr, (err, data) => {
+const handleLevelFive = function(stationA, stationB, cb) {  
+  var arr = [stationA, stationB]  
+  var ans = ['line3', 'red']
+  connection.query('select stations.id as station_ID, service_lines.id as line_ID, origin_id, destination_id, color, service_lines.name as line_name from stops inner join service_lines on service_lines.id = stops.station_id inner join stations on stations.name = ?,?;', arr, (err, data) => {
     if (err) {
-      console.log('Error on mySql syntax')
+      console.log('Error')
     } else {
-      console.log('Succesfully fetched data for level5')
-      cb(null, data)
-      console.log(data)
+      ans.push(data)
+      console.log(ans)
+      
     }
   })
 };
@@ -125,7 +125,7 @@ const handleLevelFive = function(station, cb) {
   //checkCurrentFavs('2', () => console.log('checkCurrentFavs working'))
   //getAllStations(() => console.log('getAllStations working'))
   //getConnectingLines('Ashby', () => console.log('getConnectingLines working'))
-  handleLevelFive('Berkeley',  () => {console.log('hi');});
+  handleLevelFive('Ashby','Powell',  () => {console.log('hi');});
 
 module.exports = {
   getAllLines,
