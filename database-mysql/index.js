@@ -104,20 +104,16 @@ const getAllStations = function(callback) {
 //call function recursively
 //Now Input = (transfer_station, station_name_B)
 
-const handleLevelFive = function(stationA, stationB, cb) {  
-  var arr = [stationA, stationB]  
-  var ans = ['line3', 'red']
-  connection.query('select stations.id as station_ID, service_lines.id as line_ID, origin_id, destination_id, color, service_lines.name as line_name from stops inner join service_lines on service_lines.id = stops.station_id inner join stations on stations.name = ?,?;', arr, (err, data) => {
+const handleLevelFive = function(station, cb) {  
+  var arr = [station]  
+  connection.query('select * from stops, service_lines where stops.line_id = service_lines.id and stops.station_id = ?;', arr, (err, data) => {
     if (err) {
       console.log('Error')
     } else {
-      ans.push(data)
-      console.log(ans)
-      
+      console.log(data)
     }
   })
 };
-
 
 //tests to check if the methods are working
   //getAllLines(() => console.log('getAllLines working'))
@@ -125,7 +121,7 @@ const handleLevelFive = function(stationA, stationB, cb) {
   //checkCurrentFavs('2', () => console.log('checkCurrentFavs working'))
   //getAllStations(() => console.log('getAllStations working'))
   //getConnectingLines('Ashby', () => console.log('getConnectingLines working'))
-  handleLevelFive('Ashby','Powell',  () => {console.log('hi');});
+  //handleLevelFive(5,  () => {console.log('hi');});
 
 module.exports = {
   getAllLines,

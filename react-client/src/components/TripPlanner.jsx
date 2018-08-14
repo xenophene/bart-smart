@@ -8,7 +8,9 @@ class TripPlanner extends React.Component {
     this.state = {
       allStations: [],
       startingStop: ['Starting Station'],
-      endingStop: ['Ending Station']
+      endingStop: ['Ending Station'],
+      startingId: -1,
+      endingId: -1,
     }
   }
 
@@ -34,16 +36,21 @@ class TripPlanner extends React.Component {
 //Functions that handle start and ending stop for step 5
 
   handleStartPoint(e) {
-    this.setState({startingStop: e.target.value})
+    let target = JSON.parse(e.target.value);
+    this.setState({startingStop: target.name})
+    this.setState({startingId: target.id})
+    console.log(target.id)
   }
 
   handleEndPoint(e) {
-    this.setState({endingStop: e.target.value})
+    let target = JSON.parse(e.target.value);
+    this.setState({endingStop: target.name})
+    this.setState({endingId: target.id})
   }
 
   fetchLineInfo() {
-    var start = this.state.startingStop
-    var end = this.state.endingStop
+    var start = this.state.startingId
+    var end = this.state.endingId
     axios.get(`/api/connections/:${start}/:${end}`)
       .then(function (response) {
         console.log(response);
@@ -76,8 +83,7 @@ class TripPlanner extends React.Component {
           {this.state.allStations.map( (station, index) =>
             <option 
               key={index}
-              value={station.name}
-              name={station.id}
+              value={JSON.stringify({'name':station.name, 'id': station.id})}
               >
                 {station.name}
             </option> 
@@ -92,8 +98,7 @@ class TripPlanner extends React.Component {
           {this.state.allStations.map( (station, index) =>
             <option 
               key={index}
-              value={station.name}
-              name ={station.id}
+              value={JSON.stringify({'name':station.name, 'id': station.id})}
               >
                 {station.name}
             </option> 
