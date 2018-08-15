@@ -65,9 +65,10 @@ app.get('/api/stations', (req, res) => {
   })
 })
 
+
 //Request to get connecting lines for two stations
 
-app.get('/api/connections/:start/:end', (req,res) => {
+app.get('/api/connections/:start', (req,res) => {
   var start = req.params.start
   var end = req.params.end
 
@@ -78,6 +79,9 @@ app.get('/api/connections/:start/:end', (req,res) => {
       res.send(data)
     }
   })
+
+
+
 
   // db.handleLevelFive(end, (err, data) => {
   //   if (err) {

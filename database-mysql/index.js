@@ -121,7 +121,7 @@ const handleLevelFive = function(station, cb) {
   //checkCurrentFavs('2', () => console.log('checkCurrentFavs working'))
   //getAllStations(() => console.log('getAllStations working'))
   //getConnectingLines('Ashby', () => console.log('getConnectingLines working'))
-  //handleLevelFive(5,  () => {console.log('hi');});
+  handleLevelFive(5,  () => {console.log('hi');});
 
 module.exports = {
   getAllLines,

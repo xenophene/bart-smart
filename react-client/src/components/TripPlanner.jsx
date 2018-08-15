@@ -39,7 +39,6 @@ class TripPlanner extends React.Component {
     let target = JSON.parse(e.target.value);
     this.setState({startingStop: target.name})
     this.setState({startingId: target.id})
-    console.log(target.id)
   }
 
   handleEndPoint(e) {
@@ -53,6 +52,7 @@ class TripPlanner extends React.Component {
     var end = this.state.endingId
     axios.get(`/api/connections/:${start}/:${end}`)
       .then(function (response) {
+        console.log('Success')
         console.log(response);
     })
       .catch(function (error) {
