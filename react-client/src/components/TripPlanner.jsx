@@ -50,10 +50,10 @@ class TripPlanner extends React.Component {
   fetchLineInfo() {
     var start = this.state.startingId
     var end = this.state.endingId
-    axios.get(`/api/connections/:${start}/:${end}`)
+    axios.get(`/api/connections/${start}`)
       .then(function (response) {
         console.log('Success')
-        console.log(response);
+        console.log(response.data);
     })
       .catch(function (error) {
         console.log(error);
@@ -64,6 +64,7 @@ class TripPlanner extends React.Component {
 
   componentDidMount() {
     this.fetchNewStations()
+    this.fetchLineInfo()
   }
 
   render() {

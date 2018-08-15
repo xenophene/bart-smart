@@ -111,6 +111,7 @@ const handleLevelFive = function(station, cb) {
       console.log('Error')
     } else {
       console.log(data)
+      cb(null, data)
     }
   })
 };

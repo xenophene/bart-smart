@@ -69,14 +69,11 @@ app.get('/api/stations', (req, res) => {
 //Request to get connecting lines for two stations
 
 app.get('/api/connections/:start', (req,res) => {
-  var start = req.params.start
-  var end = req.params.end
-
-  db.handleLevelFive(start, (err, data) => {
+  db.handleLevelFive(req.params.start, (err, data) => {
     if (err) {
       console.log('Error handling level five', err)
     } else {
-      res.send(data)
+      res.send((data))
     }
   })
 
