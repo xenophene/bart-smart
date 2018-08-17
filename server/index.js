@@ -73,7 +73,7 @@ app.get('/api/connections/:start', (req,res) => {
     if (err) {
       console.log('Error handling level five', err)
     } else {
-      res.send((data))
+      res.send(JSON.stringify(data) + 'hi')
     }
   })
 

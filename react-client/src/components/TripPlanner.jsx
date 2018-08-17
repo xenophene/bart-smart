@@ -9,8 +9,8 @@ class TripPlanner extends React.Component {
       allStations: [],
       startingStop: ['Starting Station'],
       endingStop: ['Ending Station'],
-      startingId: -1,
-      endingId: -1,
+      startingId: [],
+      endingId: [],
     }
   }
 
@@ -36,6 +36,7 @@ class TripPlanner extends React.Component {
 //Functions that handle start and ending stop for step 5
 
   handleStartPoint(e) {
+    console.log(target,id)
     let target = JSON.parse(e.target.value);
     this.setState({startingStop: target.name})
     this.setState({startingId: target.id})
@@ -50,10 +51,11 @@ class TripPlanner extends React.Component {
   fetchLineInfo() {
     var start = this.state.startingId
     var end = this.state.endingId
+    console.log(start)
     axios.get(`/api/connections/${start}`)
       .then(function (response) {
         console.log('Success')
-        console.log(response.data);
+        console.log(response);
     })
       .catch(function (error) {
         console.log(error);
