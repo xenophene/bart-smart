@@ -53,12 +53,11 @@ class TripPlanner extends React.Component {
   }
 
   fetchLineInfo() {
-    console.log(this.state.startingId)
     var start = this.state.startingId
     var end = this.state.endingId
     axios.get(`/api/connections/${start}`)
-      .then(function (response) {
-        console.log('Success')
+      .then((response) => {
+        console.log('Success fetched Start info from DB')
         this.handleStartingDB(response.data)
     })
       .catch(function (error) {
@@ -67,8 +66,8 @@ class TripPlanner extends React.Component {
   }
 
   handleStartingDB(data) {
-    console.log(data)
     this.setState({startingDB: data})
+    console.log(this.state.startingDB)
   }
 
 //Life cycle
