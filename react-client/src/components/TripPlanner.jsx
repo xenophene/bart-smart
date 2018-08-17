@@ -11,6 +11,8 @@ class TripPlanner extends React.Component {
       endingStop: 'Ending Station',
       startingId: [],
       endingId: [],
+      startingDB: '',
+      endingDB: ''
     }
   }
 
@@ -57,11 +59,16 @@ class TripPlanner extends React.Component {
     axios.get(`/api/connections/${start}`)
       .then(function (response) {
         console.log('Success')
-        console.log(response);
+        this.handleStartingDB(response.data)
     })
       .catch(function (error) {
         console.log(error);
     });
+  }
+
+  handleStartingDB(data) {
+    console.log(data)
+    this.setState({startingDB: data})
   }
 
 //Life cycle
