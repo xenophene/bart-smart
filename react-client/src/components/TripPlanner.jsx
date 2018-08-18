@@ -35,7 +35,7 @@ class TripPlanner extends React.Component {
     this.setState({allStations: sort})
   }
 
-//Functions that handle start and ending stop for step 5
+//Functions that handle start and ending stops
 
   handleStartPoint(e) {
     let target = JSON.parse(e.target.value);
