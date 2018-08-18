@@ -80,22 +80,40 @@ class TripPlanner extends React.Component {
   
   handleEndingDB(data) {
     this.setState({endingDB: data})
+    console.log(this.state.startingDB)
     this.findLines(this.state.startingDB, this.state.endingDB)
   }
 
-// Route optimization algorithms
+// Route optimization algorithm
 
-  function findLines(start,end) {
-  var overlappingDestinations = []
-
-  start.forEach((startObjects) => {
-    end.forEach((endObjects) => {
-      if (startObjects.destination_id === endObjects.destination_id) {
-        overlappingDestinations.push([startObjects.destination_id, startObjects.name, startObjects.color])
-      }
-    })
+  findLines(start, end) {
+    this.createBetterDataPackage(start)
+    
   })
-  return overlappingDestinations
+
+  createBetterDataPackage(data) {
+    var newObj = {};
+   data.forEach( obj => {
+     newObj[obj.line_id] === undefined ? newObj[obj.line_id] = [obj.station_id] : newObj[obj.line_id].push(obj.station_id)
+   })
+   return newObj;
+ }
+
+
+  
+
+
+
+  // var overlappingDestinations = []
+
+  // start.forEach((startObjects) => {
+  //   end.forEach((endObjects) => {
+  //     if (startObjects.destination_id === endObjects.destination_id) {
+  //       overlappingDestinations.push([startObjects.destination_id, startObjects.name, startObjects.color])
+  //     }
+  //   })
+  // })
+  // console.log(overlappingDestinations)
   }
 
 
@@ -111,6 +129,9 @@ class TripPlanner extends React.Component {
         {station.name}
       </option> 
     );
+
+    console.log('startID:', this.state.startingId)
+    console.log('endingID:', this.state.endingId)
     return (
     <div className="trip-planner-view">
       <div className="selections">

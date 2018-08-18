@@ -68,25 +68,14 @@ app.get('/api/stations', (req, res) => {
 
 //Request to get connecting lines for two stations
 
-app.get('/api/connections/:start', (req,res) => {
-  db.handleLevelFive(req.params.start, (err, data) => {
+app.get('/api/connections/:stationID', (req,res) => {
+  db.handleLevelFive(req.params.stationID, (err, data) => {
     if (err) {
       console.log('Error handling level five', err)
     } else {
       res.send(data)
     }
   })
-
-
-
-
-  // db.handleLevelFive(end, (err, data) => {
-  //   if (err) {
-  //     console.log('Error handling level five', err)
-  //   } else {
-  //     res.send(data)
-  //   }
-  // })
 })
 
 

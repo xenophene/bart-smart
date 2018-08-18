@@ -106,7 +106,7 @@ const getAllStations = function(callback) {
 
 const handleLevelFive = function(station, cb) {  
   var arr = [station]  
-  connection.query('select * from stops, service_lines where stops.line_id = service_lines.id and stops.station_id = ?;', arr, (err, data) => {
+  connection.query('select * from stops where line_id in (select line_id from stops, service_lines where line_id = service_lines.id and station_id = ?);', arr, (err, data) => {
     if (err) {
       console.log('Error')
     } else {
@@ -122,7 +122,7 @@ const handleLevelFive = function(station, cb) {
   //checkCurrentFavs('2', () => console.log('checkCurrentFavs working'))
   //getAllStations(() => console.log('getAllStations working'))
   //getConnectingLines('Ashby', () => console.log('getConnectingLines working'))
-  handleLevelFive(6,  () => {console.log('hi');});
+  //handleLevelFive(5,  () => {console.log('hi');});
 
 module.exports = {
   getAllLines,
