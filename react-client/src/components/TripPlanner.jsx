@@ -84,8 +84,18 @@ class TripPlanner extends React.Component {
   }
 
 // Route optimization algorithms
-  findLines(start, end) {
-    
+
+  function findLines(start,end) {
+  var overlappingDestinations = []
+
+  start.forEach((startObjects) => {
+    end.forEach((endObjects) => {
+      if (startObjects.destination_id === endObjects.destination_id) {
+        overlappingDestinations.push([startObjects.destination_id, startObjects.name, startObjects.color])
+      }
+    })
+  })
+  return overlappingDestinations
   }
 
 
