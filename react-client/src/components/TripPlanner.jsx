@@ -63,11 +63,24 @@ class TripPlanner extends React.Component {
       .catch(function (error) {
         console.log(error);
     });
+
+    axios.get(`/api/connections/${end}`)
+    .then((response) => {
+      console.log('Success fetched End info from DB')
+      this.handleEndingDB(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
 
   handleStartingDB(data) {
     this.setState({startingDB: data})
-    console.log(this.state.startingDB)
+  }
+
+  handleEndingDB(data) {
+    this.setState({endingDB: data})
+    console.log(this.state.endingDB)
   }
 
 //Life cycle
