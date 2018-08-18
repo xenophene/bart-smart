@@ -39,7 +39,6 @@ class TripPlanner extends React.Component {
 
   handleStartPoint(e) {
     let target = JSON.parse(e.target.value);
-    console.log(e.target.id)
     this.setState({startingStop: target.name})
     this.setState({startingId: target.id})
   
@@ -55,6 +54,7 @@ class TripPlanner extends React.Component {
   fetchLineInfo() {
     var start = this.state.startingId
     var end = this.state.endingId
+
     axios.get(`/api/connections/${start}`)
       .then((response) => {
         console.log('Success fetched Start info from DB')
@@ -73,15 +73,21 @@ class TripPlanner extends React.Component {
       console.log(error);
     });
   }
-
+  
   handleStartingDB(data) {
     this.setState({startingDB: data})
   }
-
+  
   handleEndingDB(data) {
     this.setState({endingDB: data})
-    console.log(this.state.endingDB)
+    this.findLines(this.state.startingDB, this.state.endingDB)
   }
+
+// Route optimization algorithms
+  findLines(start, end) {
+    
+  }
+
 
 //Life cycle
 
