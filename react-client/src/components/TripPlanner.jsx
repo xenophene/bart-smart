@@ -58,38 +58,27 @@ class TripPlanner extends React.Component {
     axios.get(`/api/connections/${start}`)
       .then((response) => {
         console.log('Success fetched Start info from DB')
-        this.handleStartingDB(response.data)
-    })
+        this.setState({startingDB: response.data})
+
+        var resultLine = this.findLines(this.state.startingDB, this.state.startingId, this.state.endingId)
+        console.log(resultLine)
+      })
       .catch(function (error) {
         console.log(error);
-    });
-
-    axios.get(`/api/connections/${end}`)
-    .then((response) => {
-      console.log('Success fetched End info from DB')
-      this.handleEndingDB(response.data)
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
-  
-  handleStartingDB(data) {
-    this.setState({startingDB: data})
-  }
-  
-  handleEndingDB(data) {
-    this.setState({endingDB: data})
-    console.log(this.state.startingDB)
-    this.findLines(this.state.startingDB, this.state.endingDB)
+      });
   }
 
-// Route optimization algorithm
-
-  findLines(start, end) {
-    this.createBetterDataPackage(start)
-    
-  })
+  findLines(start, startId, endId) {
+    console.log(start)
+    var betterData = this.createBetterDataPackage(start);
+    console.log(betterData)
+    for (var key in betterData) {
+      if (betterData[key].indexOf(endId) > betterData[key].indexOf(startId)){
+        console.log('hiiiiiiii')
+        return key
+      }
+    }
+  };
 
   createBetterDataPackage(data) {
     var newObj = {};
@@ -100,21 +89,8 @@ class TripPlanner extends React.Component {
  }
 
 
-  
 
 
-
-  // var overlappingDestinations = []
-
-  // start.forEach((startObjects) => {
-  //   end.forEach((endObjects) => {
-  //     if (startObjects.destination_id === endObjects.destination_id) {
-  //       overlappingDestinations.push([startObjects.destination_id, startObjects.name, startObjects.color])
-  //     }
-  //   })
-  // })
-  // console.log(overlappingDestinations)
-  }
 
 
 //Life cycle
