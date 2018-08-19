@@ -12,7 +12,7 @@ class TripPlanner extends React.Component {
       startingId: [],
       endingId: [],
       startingDB: '',
-      endingDB: ''
+      chosenLine: ''
     }
   }
 
@@ -35,17 +35,17 @@ class TripPlanner extends React.Component {
     this.setState({allStations: sort})
   }
 
-//Functions that handle start and ending stops
+//Functions that handle routing
 
   handleStartPoint(e) {
     let target = JSON.parse(e.target.value);
     this.setState({startingStop: target.name})
     this.setState({startingId: target.id})
-  
   }
 
   handleEndPoint(e) {
     let target = JSON.parse(e.target.value);
+    console.log('ENDPOING ID', target.id)
     this.setState({endingStop: target.name})
     this.setState({endingId: target.id})
 
@@ -54,14 +54,14 @@ class TripPlanner extends React.Component {
   fetchLineInfo() {
     var start = this.state.startingId
     var end = this.state.endingId
-
+    console.log(end, start)
     axios.get(`/api/connections/${start}`)
       .then((response) => {
         console.log('Success fetched Start info from DB')
         this.setState({startingDB: response.data})
-
         var resultLine = this.findLines(this.state.startingDB, this.state.startingId, this.state.endingId)
         console.log(resultLine)
+        this.fetchLineInfo(resultLine)
       })
       .catch(function (error) {
         console.log(error);
@@ -69,12 +69,10 @@ class TripPlanner extends React.Component {
   }
 
   findLines(start, startId, endId) {
-    console.log(start)
     var betterData = this.createBetterDataPackage(start);
-    console.log(betterData)
+    console.log('betterData:', betterData)
     for (var key in betterData) {
       if (betterData[key].indexOf(endId) > betterData[key].indexOf(startId)){
-        console.log('hiiiiiiii')
         return key
       }
     }
@@ -87,11 +85,6 @@ class TripPlanner extends React.Component {
    })
    return newObj;
  }
-
-
-
-
-
 
 //Life cycle
 
@@ -106,8 +99,6 @@ class TripPlanner extends React.Component {
       </option> 
     );
 
-    console.log('startID:', this.state.startingId)
-    console.log('endingID:', this.state.endingId)
     return (
     <div className="trip-planner-view">
       <div className="selections">
