@@ -45,7 +45,6 @@ class TripPlanner extends React.Component {
 
   handleEndPoint(e) {
     let target = JSON.parse(e.target.value);
-    console.log('ENDPOING ID', target.id)
     this.setState({endingStop: target.name})
     this.setState({endingId: target.id})
 
@@ -54,13 +53,12 @@ class TripPlanner extends React.Component {
   fetchLineInfo() {
     var start = this.state.startingId
     var end = this.state.endingId
-    console.log(end, start)
     axios.get(`/api/connections/${start}`)
       .then((response) => {
         console.log('Success fetched Start info from DB')
         this.setState({startingDB: response.data})
         var resultLine = this.findLines(this.state.startingDB, this.state.startingId, this.state.endingId)
-        console.log(resultLine)
+        console.log('resultLine', resultLine)
         this.fetchLineInfo(resultLine)
       })
       .catch(function (error) {
@@ -70,6 +68,7 @@ class TripPlanner extends React.Component {
 
   findLines(start, startId, endId) {
     var betterData = this.createBetterDataPackage(start);
+    console.log(start)
     console.log('betterData:', betterData)
     for (var key in betterData) {
       if (betterData[key].indexOf(endId) > betterData[key].indexOf(startId)){
