@@ -41,6 +41,7 @@ class TripPlanner extends React.Component {
     let target = JSON.parse(e.target.value);
     this.setState({startingStop: target.name})
     this.setState({startingId: target.id})
+    console.log(this.state.startingId)
   }
 
   handleEndPoint(e) {
@@ -58,8 +59,7 @@ class TripPlanner extends React.Component {
         console.log('Success fetched Start info from DB')
         this.setState({startingDB: response.data})
         var resultLine = this.findLines(this.state.startingDB, this.state.startingId, this.state.endingId)
-        console.log('resultLine', resultLine)
-        this.fetchLineInfo(resultLine)
+        this.setState({chosenLine: resultLine})
       })
       .catch(function (error) {
         console.log(error);
@@ -68,8 +68,6 @@ class TripPlanner extends React.Component {
 
   findLines(start, startId, endId) {
     var betterData = this.createBetterDataPackage(start);
-    console.log(start)
-    console.log('betterData:', betterData)
     for (var key in betterData) {
       if (betterData[key].indexOf(endId) > betterData[key].indexOf(startId)){
         return key
@@ -97,7 +95,7 @@ class TripPlanner extends React.Component {
         {station.name}
       </option> 
     );
-
+    console.log('chosenLine', this.state.chosenLine)
     return (
     <div className="trip-planner-view">
       <div className="selections">

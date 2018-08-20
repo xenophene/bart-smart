@@ -106,11 +106,11 @@ const getAllStations = function(callback) {
 
 const handleLevelFive = function(station, cb) {  
   var arr = [station]  
-  connection.query('select * from stops, service_lines.name, service_lines.color where line_id in (select line_id from stops, service_lines where line_id = service_lines.id and station_id = ?);', arr, (err, data) => {
+  connection.query('select * from stops where line_id in (select line_id from stops, service_lines where line_id = service_lines.id and station_id = ?);', arr, (err, data) => {
     if (err) {
       console.log('Error fethcing handleFive')
     } else {
-      console.log(data)
+      console.log('Succesfully fetched for level5')
       cb(null, data)
     }
   })
