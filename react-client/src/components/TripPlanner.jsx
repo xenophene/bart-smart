@@ -60,10 +60,15 @@ class TripPlanner extends React.Component {
         this.setState({startingDB: response.data})
         var resultLine = this.findLines(this.state.startingDB, this.state.startingId, this.state.endingId)
         this.setState({chosenLine: resultLine})
+        this.fetchLine(this.state.chosenLine)
       })
       .catch(function (error) {
         console.log(error);
       });
+  }
+
+  fetchLine(line) {
+    console.log(line)
   }
 
   findLines(start, startId, endId) {
@@ -82,6 +87,7 @@ class TripPlanner extends React.Component {
    })
    return newObj;
  }
+
 
 //Life cycle
 

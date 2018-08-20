@@ -78,6 +78,16 @@ app.get('/api/connections/:stationID', (req,res) => {
   })
 })
 
+app.get('/finalLine/:lineInfo', (req, res) => {
+  db.getAllLineInfo(req.params.lineInfo, (err, data) => {
+    if (err) {
+      console.log('Error getting line info')
+    } else {
+      res.send(data)
+    }
+  })
+})
+
 
 
 app.listen(PORT, () => {
