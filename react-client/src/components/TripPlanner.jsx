@@ -14,7 +14,8 @@ class TripPlanner extends React.Component {
       startingDB: '',
       chosenLineName: '',
       chosenTowards: '',
-      chosenColor: ''
+      chosenColor: '',
+      allStations: ''
     }
   }
 
@@ -126,7 +127,7 @@ class TripPlanner extends React.Component {
         {station.name}
       </option> 
     );
-  
+  console.log('all:', this.state.allStations)
     return (
     <div className="trip-planner-view">
       <div className="selections">
