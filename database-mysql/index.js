@@ -110,24 +110,37 @@ const handleLevelFive = function(station, cb) {
     if (err) {
       console.log('Error fethcing handleFive')
     } else {
+      cb(null, data)
       console.log('Succesfully fetched for level5')
+    }
+  })
+};
+
+const getAllLineInfo = function(lineInfo, cb) {
+  var arr = [lineInfo]
+  connection.query('select name, color from service_lines where service_lines.id =?;', arr, (err, data) => {
+    if (err) {
+      console.log('Error fetching chosen ')
+    } else {
+      console.log('Sucessfully fetched all line')
       cb(null, data)
     }
   })
 };
 
 //tests to check if the methods are working
-  //getAllLines(() => console.log('getAllLines working'))
+//getAllLines(() => console.log('getAllLines working'))
   //getAllStops(5, () => console.log('getAllStops working'))
   //checkCurrentFavs('2', () => console.log('checkCurrentFavs working'))
   //getAllStations(() => console.log('getAllStations working'))
   //getConnectingLines('Ashby', () => console.log('getConnectingLines working'))
-  handleLevelFive(5,  () => {console.log('hi');});
-
+  //handleLevelFive(5,  () => {console.log('hi')});
+  getAllLineInfo(1, () => {console.log('hi')})
 module.exports = {
   getAllLines,
   getAllStops,
   checkCurrentFavs,
   getAllStations,
-  handleLevelFive
+  handleLevelFive,
+  getAllLineInfo
 };

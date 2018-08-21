@@ -68,7 +68,13 @@ class TripPlanner extends React.Component {
   }
 
   fetchLine(line) {
-    console.log(line)
+    axios.get(`/finalLine/${line}`)
+      .then((response) => {
+        console.log('line info:', response)
+      })
+      .catch(function ( error) {
+        console.log(error)
+      });
   }
 
   findLines(start, startId, endId) {
