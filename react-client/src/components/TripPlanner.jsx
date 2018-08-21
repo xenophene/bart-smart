@@ -12,7 +12,9 @@ class TripPlanner extends React.Component {
       startingId: [],
       endingId: [],
       startingDB: '',
-      chosenLine: ''
+      chosenLineName: '',
+      chosenTowards: '',
+      chosenColor: ''
     }
   }
 
@@ -70,7 +72,7 @@ class TripPlanner extends React.Component {
   fetchLine(line) {
     axios.get(`/finalLine/${line}`)
       .then((response) => {
-        console.log('line info:', response)
+        this.handleChosenLineInfo(response.data)
       })
       .catch(function ( error) {
         console.log(error)
@@ -88,11 +90,31 @@ class TripPlanner extends React.Component {
 
   createBetterDataPackage(data) {
     var newObj = {};
-   data.forEach( obj => {
-     newObj[obj.line_id] === undefined ? newObj[obj.line_id] = [obj.station_id] : newObj[obj.line_id].push(obj.station_id)
-   })
+    data.forEach( obj => {
+      newObj[obj.line_id] === undefined ? newObj[obj.line_id] = [obj.station_id] : newObj[obj.line_id].push(obj.station_id)
+    })
    return newObj;
- }
+  }
+
+  handleChosenLineInfo(data) {
+    console.log(data)
+    var lineName = ''
+    var towards = ''
+    var color = ''
+    data.forEach( (obj) => {
+      var lineColor = obj.name.split(' ')
+      for (var i=0; i<lineColor[0].length -1; i++) {
+        lineName += lineColor[0][i]
+      }
+      towards += lineColor[1]
+      towards += ' ' + lineColor[2]
+      color += obj.color
+    })
+
+    this.setState({chosenLineName: lineName})
+    this.setState({chosenTowards: towards})
+    this.setState({chosenColor: color})
+  }
 
 
 //Life cycle
