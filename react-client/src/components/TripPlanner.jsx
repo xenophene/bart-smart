@@ -50,7 +50,6 @@ class TripPlanner extends React.Component {
     let target = JSON.parse(e.target.value);
     this.setState({endingStop: target.name})
     this.setState({endingId: target.id})
-
   }
 
   fetchLineInfo() {
@@ -93,11 +92,10 @@ class TripPlanner extends React.Component {
     data.forEach( obj => {
       newObj[obj.line_id] === undefined ? newObj[obj.line_id] = [obj.station_id] : newObj[obj.line_id].push(obj.station_id)
     })
-   return newObj;
+    return newObj;
   }
 
   handleChosenLineInfo(data) {
-    console.log(data)
     var lineName = ''
     var towards = ''
     var color = ''
@@ -116,7 +114,6 @@ class TripPlanner extends React.Component {
     this.setState({chosenColor: color})
   }
 
-
 //Life cycle
 
   componentDidMount() {
@@ -129,7 +126,7 @@ class TripPlanner extends React.Component {
         {station.name}
       </option> 
     );
-    console.log('chosenLine', this.state.chosenLine)
+    
     return (
     <div className="trip-planner-view">
       <div className="selections">
@@ -184,8 +181,8 @@ class TripPlanner extends React.Component {
         <div className="directions-step">
           <div className="directions-line-header">
             <div className="line-circle" style={{backgroundColor: "#ed1d24"}}></div>
-            <p className="line-name">Red Line</p>
-            <p className="line-direction">towards Station C</p>
+            <p className="line-name">{this.state.chosenLineName} Line</p>
+            <p className="line-direction">{this.state.chosenTowards}</p>
           </div>
           <ul>
             <li> Station A </li>
