@@ -43,7 +43,6 @@ class TripPlanner extends React.Component {
     let target = JSON.parse(e.target.value);
     this.setState({startingStop: target.name})
     this.setState({startingId: target.id})
-    console.log(this.state.startingId)
   }
 
   handleEndPoint(e) {
@@ -82,6 +81,7 @@ class TripPlanner extends React.Component {
     var betterData = this.createBetterDataPackage(start);
     for (var key in betterData) {
       if (betterData[key].indexOf(endId) > betterData[key].indexOf(startId)){
+        this.setState({allStations: betterData[key]})
         return key
       }
     }
@@ -126,7 +126,7 @@ class TripPlanner extends React.Component {
         {station.name}
       </option> 
     );
-    
+  
     return (
     <div className="trip-planner-view">
       <div className="selections">
