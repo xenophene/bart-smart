@@ -16,7 +16,7 @@ class TripPlanner extends React.Component {
       chosenTowards: '',
       chosenColor: '',
       allStops: '',
-      nextStops: ''
+      nextStops: ['Station A', 'Station B', 'Station C']
     }
   }
 
@@ -205,13 +205,15 @@ class TripPlanner extends React.Component {
             <p className="line-direction">{this.state.chosenTowards}</p>
           </div>
           <ul>
-            <li> Station A </li>
-            <li> Station B </li>
-            <li> Station C </li>
+            {this.state.nextStops.map( (stops, index) => 
+              <li
+                key={index}
+              >{stops}</li>
+            )}
           </ul>
         </div>
         
-        <div className="conditional">
+        {/* <div className="conditional">
           <div className="directions-step">
             <div className="directions-line-header">
               <p className="line-name">Change Trains</p>
@@ -230,7 +232,7 @@ class TripPlanner extends React.Component {
               <li> Station E </li>
             </ul>
           </div>
-        </div>
+        </div> */}
 
         <div className="directions-step">
           <div className="directions-line-header">
