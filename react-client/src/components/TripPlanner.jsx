@@ -14,7 +14,9 @@ class TripPlanner extends React.Component {
       startingDB: '',
       chosenLineName: '',
       chosenTowards: '',
-      chosenColor: ''
+      chosenColor: '',
+      allStops: '',
+      nextStops: ''
     }
   }
 
@@ -112,6 +114,22 @@ class TripPlanner extends React.Component {
     this.setState({chosenLineName: lineName})
     this.setState({chosenTowards: towards})
     this.setState({chosenColor: color})
+
+    this.handleStationsToDisplay()
+  }
+
+  handleStationsToDisplay() {
+    console.log(this.state.startingId)
+    console.log(this.state.allStops)
+    console.log(this.state.endingId)
+    var nextStopsArr = [];
+    var start = this.state.allStops.indexOf(this.state.startingId)
+    var end = this.state.allStops.indexOf(this.state.endingId)
+
+    for (var i=start; i<=end; i++) {
+      nextStopsArr.push(this.state.allStops[i])
+    }
+    this.setState({nextStops: nextStopsArr})
   }
 
 //Life cycle
@@ -126,8 +144,6 @@ class TripPlanner extends React.Component {
         {station.name}
       </option> 
     );
-    console.log(this.state.allStops)
-    console.log('hi')
   
     return (
     <div className="trip-planner-view">
