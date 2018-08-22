@@ -119,9 +119,9 @@ class TripPlanner extends React.Component {
   }
 
   handleStationsToDisplay() {
-    console.log(this.state.startingId)
-    console.log(this.state.allStops)
-    console.log(this.state.endingId)
+    // console.log(this.state.startingId)
+    // console.log(this.state.allStops)
+    // console.log(this.state.endingId)
     var nextStopsArr = [];
     var start = this.state.allStops.indexOf(this.state.startingId)
     var end = this.state.allStops.indexOf(this.state.endingId)
@@ -129,7 +129,9 @@ class TripPlanner extends React.Component {
     for (var i=start; i<=end; i++) {
       nextStopsArr.push(this.state.allStops[i])
     }
+
     this.setState({nextStops: nextStopsArr})
+    console.log(this.state.nextStops)
   }
 
 //Life cycle
@@ -144,7 +146,7 @@ class TripPlanner extends React.Component {
         {station.name}
       </option> 
     );
-  
+ 
     return (
     <div className="trip-planner-view">
       <div className="selections">
@@ -208,24 +210,26 @@ class TripPlanner extends React.Component {
             <li> Station C </li>
           </ul>
         </div>
-
-        <div className="directions-step">
-          <div className="directions-line-header">
-            <p className="line-name">Change Trains</p>
+        
+        <div className="conditional">
+          <div className="directions-step">
+            <div className="directions-line-header">
+              <p className="line-name">Change Trains</p>
+            </div>
           </div>
-        </div>
 
-        <div className="directions-step">
-          <div className="directions-line-header">
-            <div className="line-circle" style={{backgroundColor: "#0099cc"}}></div>
-            <p className="line-name">Blue Line</p>
-            <p className="line-direction">towards Station F</p>
+          <div className="directions-step">
+            <div className="directions-line-header">
+              <div className="line-circle" style={{backgroundColor: "#0099cc"}}></div>
+              <p className="line-name">Blue Line</p>
+              <p className="line-direction">towards Station F</p>
+            </div>
+            <ul>
+              <li> Station C </li>
+              <li> Station D </li>
+              <li> Station E </li>
+            </ul>
           </div>
-          <ul>
-            <li> Station C </li>
-            <li> Station D </li>
-            <li> Station E </li>
-          </ul>
         </div>
 
         <div className="directions-step">
