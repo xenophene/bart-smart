@@ -14,7 +14,8 @@ class TripPlanner extends React.Component {
       startingDB: '',
       chosenLineName: '',
       chosenTowards: '',
-      chosenColor: ''
+      chosenColor: '',
+      allStops: ''
     }
   }
 
@@ -81,7 +82,7 @@ class TripPlanner extends React.Component {
     var betterData = this.createBetterDataPackage(start);
     for (var key in betterData) {
       if (betterData[key].indexOf(endId) > betterData[key].indexOf(startId)){
-        this.setState({allStations: betterData[key]})
+        this.setState({allStops: betterData[key]})
         return key
       }
     }
@@ -126,6 +127,8 @@ class TripPlanner extends React.Component {
         {station.name}
       </option> 
     );
+    console.log(this.state.allStops)
+    console.log('hi')
   
     return (
     <div className="trip-planner-view">
