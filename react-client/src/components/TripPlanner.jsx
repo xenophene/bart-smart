@@ -129,6 +129,7 @@ class TripPlanner extends React.Component {
   handleStationsToDisplay() {
     var nextStopsArr = [];
     var nextStopsName = [];
+
     var start = this.state.allStops.indexOf(this.state.startingId)
     var end = this.state.allStops.indexOf(this.state.endingId)
 
@@ -136,14 +137,24 @@ class TripPlanner extends React.Component {
       nextStopsArr.push(this.state.allStops[i])
     }
     
-    this.state.allStations.forEach( (object) => {
-      for (var i=0; i<nextStopsArr.length; i++) {
-        if (nextStopsArr[i] == object.id) {
-          nextStopsName.push(object.name)
+    // this.state.allStations.forEach( (object) => {
+    //   for (var i=0; i<nextStopsArr.length; i++) {
+    //     if (nextStopsArr[i] == object.id) {
+    //       nextStopsName.push([object.name, object.id])
+    //     }
+    //   }
+    // })
+
+    nextStopsArr.forEach( (elem) => {
+      this.state.allStations.forEach( (obj) => {
+        if (elem == obj.id) {
+          nextStopsName.push(obj.name)
         }
-      }
-    })
+      });
+    });
+
     this.setState({nextStops: nextStopsName})
+    console.log(nextStopsName)
   }
 
 //Life cycle
