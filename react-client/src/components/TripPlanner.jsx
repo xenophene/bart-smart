@@ -106,7 +106,6 @@ class TripPlanner extends React.Component {
     var color = ''
 
     data.forEach( (obj) => {
-      console.log(obj)
       var lineColor = obj.name.split(' ')
       for (var i=0; i<lineColor[0].length -1; i++) {
         lineName += lineColor[0][i]
@@ -154,7 +153,6 @@ class TripPlanner extends React.Component {
     });
 
     this.setState({nextStops: nextStopsName})
-    console.log(nextStopsName)
   }
 
 //Life cycle
@@ -169,7 +167,7 @@ class TripPlanner extends React.Component {
         {station.name}
       </option> 
     );
-
+console.log(this.state.chosenColor)
     return (
     <div className="trip-planner-view">
       <div className="selections">
@@ -223,7 +221,7 @@ class TripPlanner extends React.Component {
 
         <div className="directions-step">
           <div className="directions-line-header">
-            <div className="line-circle" style={{backgroundColor: "#ed1d24"}}></div>
+            <div className="line-circle" style={{backgroundColor: "#"+ `${this.state.chosenColor}`}}></div>
             <p className="line-name">{this.state.chosenLineName} Line</p>
             <p className="line-direction">{this.state.chosenTowards}</p>
           </div>
