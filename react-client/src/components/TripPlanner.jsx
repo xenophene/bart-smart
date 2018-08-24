@@ -16,7 +16,8 @@ class TripPlanner extends React.Component {
       chosenTowards: '',
       chosenColor: '',
       allStops: '',
-      nextStops: ['Station A', 'Station B', 'Station C']
+      nextStops: ['Middle Station A', ' Middle Station B', ' Middle Station C'],
+      transfer_rendering: false
     }
   }
 
@@ -39,7 +40,7 @@ class TripPlanner extends React.Component {
     this.setState({allStations: sort})
   }
 
-//Functions that handle routing
+//Functions that handle and get routing from database
 
   handleStartPoint(e) {
     let target = JSON.parse(e.target.value);
@@ -79,6 +80,8 @@ class TripPlanner extends React.Component {
       });
   }
 
+//Functions that manage data for routint 
+
   findLines(start, startId, endId) {
     var betterData = this.createBetterDataPackage(start);
     for (var key in betterData) {
@@ -93,7 +96,7 @@ class TripPlanner extends React.Component {
     var newObj = {};
     data.forEach( obj => {
       newObj[obj.line_id] === undefined ? newObj[obj.line_id] = [obj.station_id] : newObj[obj.line_id].push(obj.station_id)
-    })
+    });
     return newObj;
   }
 
@@ -101,13 +104,18 @@ class TripPlanner extends React.Component {
     var lineName = ''
     var towards = ''
     var color = ''
+
     data.forEach( (obj) => {
+      console.log(obj)
       var lineColor = obj.name.split(' ')
       for (var i=0; i<lineColor[0].length -1; i++) {
         lineName += lineColor[0][i]
       }
-      towards += lineColor[1]
-      towards += ' ' + lineColor[2]
+      if (lineColor[3]) {
+        towards += lineColor[1] + ' ' + lineColor[2] + ' ' + lineColor[3]
+      } else {
+      towards += lineColor[1] + ' ' + lineColor[2]
+      }
       color += obj.color
     })
 
@@ -119,19 +127,23 @@ class TripPlanner extends React.Component {
   }
 
   handleStationsToDisplay() {
-    // console.log(this.state.startingId)
-    // console.log(this.state.allStops)
-    // console.log(this.state.endingId)
     var nextStopsArr = [];
+    var nextStopsName = [];
     var start = this.state.allStops.indexOf(this.state.startingId)
     var end = this.state.allStops.indexOf(this.state.endingId)
 
     for (var i=start; i<=end; i++) {
       nextStopsArr.push(this.state.allStops[i])
     }
-
-    this.setState({nextStops: nextStopsArr})
-    console.log(this.state.nextStops)
+    
+    this.state.allStations.forEach( (object) => {
+      for (var i=0; i<nextStopsArr.length; i++) {
+        if (nextStopsArr[i] == object.id) {
+          nextStopsName.push(object.name)
+        }
+      }
+    })
+    this.setState({nextStops: nextStopsName})
   }
 
 //Life cycle
@@ -146,7 +158,7 @@ class TripPlanner extends React.Component {
         {station.name}
       </option> 
     );
- 
+
     return (
     <div className="trip-planner-view">
       <div className="selections">
