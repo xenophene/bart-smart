@@ -11,25 +11,28 @@
   "author": "Bart-Smart",
   "license": "ISC",
   "devDependencies": {
+    "axios-mock-adapter": "^1.15.0",
     "babel-core": "^6.26.3",
-    "babel-loader": "^6.3.2",
+    "babel-jest": "^23.4.2",
+    "babel-loader": "^7.1.5",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.23.0",
-    "webpack": "^2.2.1",
-    "webpack-cli": "^3.1.0",
-    "jest": "^23.5.0"
+    "jest": "^23.5.0",
+    "react-test-renderer": "^16.4.2",
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0"
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "body-parser": "^1.17.2",
-    "bootstrap": "^3.3.7",
-    "express": "^4.15.4",
+    "body-parser": "^1.18.3",
+    "bootstrap": "^4.1.3",
+    "express": "^4.16.3",
     "google-maps-react": "^2.0.2",
-    "jquery": "^3.2.1",
-    "mongoose": "^4.11.6",
-    "mysql": "^2.14.1",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "underscore": "^1.8.3"
+    "jquery": "^3.3.1",
+    "mysql": "^2.16.0",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "underscore": "^1.9.1"
   }
 }

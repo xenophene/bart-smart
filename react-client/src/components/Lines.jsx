@@ -13,7 +13,6 @@ class Lines extends React.Component {
   }
 
 //Get requests and rendering for all lines
-  
   fetchNewLines() {
     axios({
       method:'get',

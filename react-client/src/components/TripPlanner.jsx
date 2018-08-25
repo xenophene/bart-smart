@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import axios from 'axios';
+import TransferStations from './TransferStations.jsx'
 
 class TripPlanner extends React.Component {
   constructor(props) {
@@ -135,14 +136,6 @@ class TripPlanner extends React.Component {
     for (var i=start; i<=end; i++) {
       nextStopsArr.push(this.state.allStops[i])
     }
-    
-    // this.state.allStations.forEach( (object) => {
-    //   for (var i=0; i<nextStopsArr.length; i++) {
-    //     if (nextStopsArr[i] == object.id) {
-    //       nextStopsName.push([object.name, object.id])
-    //     }
-    //   }
-    // })
 
     nextStopsArr.forEach( (elem) => {
       this.state.allStations.forEach( (obj) => {
@@ -167,7 +160,7 @@ class TripPlanner extends React.Component {
         {station.name}
       </option> 
     );
-console.log(this.state.chosenColor)
+
     return (
     <div className="trip-planner-view">
       <div className="selections">
@@ -233,27 +226,8 @@ console.log(this.state.chosenColor)
             )}
           </ul>
         </div>
-        
-        {/* <div className="conditional">
-          <div className="directions-step">
-            <div className="directions-line-header">
-              <p className="line-name">Change Trains</p>
-            </div>
-          </div>
 
-          <div className="directions-step">
-            <div className="directions-line-header">
-              <div className="line-circle" style={{backgroundColor: "#0099cc"}}></div>
-              <p className="line-name">Blue Line</p>
-              <p className="line-direction">towards Station F</p>
-            </div>
-            <ul>
-              <li> Station C </li>
-              <li> Station D </li>
-              <li> Station E </li>
-            </ul>
-          </div>
-        </div> */}
+        {this.state.transfer_rendering ? <TransferStations /> : null}
 
         <div className="directions-step">
           <div className="directions-line-header">
