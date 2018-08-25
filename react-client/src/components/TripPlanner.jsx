@@ -106,7 +106,6 @@ class TripPlanner extends React.Component {
     var color = ''
 
     data.forEach( (obj) => {
-      console.log(obj)
       var lineColor = obj.name.split(' ')
       for (var i=0; i<lineColor[0].length -1; i++) {
         lineName += lineColor[0][i]
@@ -129,6 +128,7 @@ class TripPlanner extends React.Component {
   handleStationsToDisplay() {
     var nextStopsArr = [];
     var nextStopsName = [];
+
     var start = this.state.allStops.indexOf(this.state.startingId)
     var end = this.state.allStops.indexOf(this.state.endingId)
 
@@ -136,13 +136,22 @@ class TripPlanner extends React.Component {
       nextStopsArr.push(this.state.allStops[i])
     }
     
-    this.state.allStations.forEach( (object) => {
-      for (var i=0; i<nextStopsArr.length; i++) {
-        if (nextStopsArr[i] == object.id) {
-          nextStopsName.push(object.name)
+    // this.state.allStations.forEach( (object) => {
+    //   for (var i=0; i<nextStopsArr.length; i++) {
+    //     if (nextStopsArr[i] == object.id) {
+    //       nextStopsName.push([object.name, object.id])
+    //     }
+    //   }
+    // })
+
+    nextStopsArr.forEach( (elem) => {
+      this.state.allStations.forEach( (obj) => {
+        if (elem == obj.id) {
+          nextStopsName.push(obj.name)
         }
-      }
-    })
+      });
+    });
+
     this.setState({nextStops: nextStopsName})
   }
 
@@ -158,7 +167,7 @@ class TripPlanner extends React.Component {
         {station.name}
       </option> 
     );
-
+console.log(this.state.chosenColor)
     return (
     <div className="trip-planner-view">
       <div className="selections">
@@ -212,7 +221,7 @@ class TripPlanner extends React.Component {
 
         <div className="directions-step">
           <div className="directions-line-header">
-            <div className="line-circle" style={{backgroundColor: "#ed1d24"}}></div>
+            <div className="line-circle" style={{backgroundColor: "#"+ `${this.state.chosenColor}`}}></div>
             <p className="line-name">{this.state.chosenLineName} Line</p>
             <p className="line-direction">{this.state.chosenTowards}</p>
           </div>

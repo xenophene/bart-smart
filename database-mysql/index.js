@@ -135,7 +135,10 @@ const getAllLineInfo = function(lineInfo, cb) {
   //getAllStations(() => console.log('getAllStations working'))
   //getConnectingLines('Ashby', () => console.log('getConnectingLines working'))
   //handleLevelFive(5,  () => {console.log('hi')});
-  getAllLineInfo(1, () => {console.log('hi')})
+  //getAllLineInfo(1, () => {console.log('hi')});
+
+
+
 module.exports = {
   getAllLines,
   getAllStops,
