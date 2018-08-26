@@ -57,19 +57,22 @@ class Lines extends React.Component {
 
   handleAddFavs(e) {
     var data = e.target.value
-    $.ajax({
-      type: "GET",
-      url: `/api/stops/${data}`,
-      success: (result) => {
-        var newLineStops = this.state.lineStops.map( (stop) => {
-          if (stop.id === data) {
-            stop.is_favorite = result
-          }
-          return stop
-        }) 
-        this.setState({lineStops: newLineStops})
-      }
+    axios({
+      method: "get",
+      url: `/api/stops/${data}`
     })
+    .then((response) => {
+      var newLineStops = this.state.lineStops.map( (stop) => {
+        if (stop.id === data) {
+          stop.is_favorite = response.data
+        }
+        return stop
+      }) 
+      this.setState({lineStops: newLineStops})
+    })
+    .catch(error => {
+      console.log(error.response);
+    });
   } 
 
 //Life cycle
