@@ -18,15 +18,16 @@ class Lines extends React.Component {
       method:'get',
       url:'/api/lines'
     })
-    .then((response) => {
-      this.changeStateOfLines(response)
-    })
     .catch(error => {
       console.log(error.response)
+    })
+    .then((response) => {
+      this.changeStateOfLines(response)
     });
   }
 
   changeStateOfLines(data) {
+
     this.setState({newLines: data.data});
   }
 
