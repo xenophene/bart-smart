@@ -18,11 +18,11 @@ class Lines extends React.Component {
       method:'get',
       url:'/api/lines'
     })
-    .catch(error => {
-      console.log(error.response)
-    })
     .then((response) => {
       this.changeStateOfLines(response)
+    })
+    .catch(error => {
+      console.log(error.response)
     });
   }
 

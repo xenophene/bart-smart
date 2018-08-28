@@ -77,7 +77,7 @@ describe('Tests for Lines component', () => {
       expect(wrapper.find(".lines-stop-list ul li[value='2']")).toHaveText('Stop2  ❤ ');
     });
     process.nextTick(() => {
-      wrapper.find(".lines-stop-list ul li[value='1']").simulate('click', {
+      wrapper.find(".lines-stop-list ul li[value='2']").simulate('click', {
         target: { value: '1' }
       });
     });
