@@ -166,7 +166,7 @@ class TripPlanner extends React.Component {
       <div className="selections">
       
         Start: 
-        <select
+        <select id="start"
           onChange={this.handleStartPoint.bind(this)}>
           {this.state.allStations.map( (station, index) =>
             <option 
@@ -181,7 +181,7 @@ class TripPlanner extends React.Component {
         <br />
 
         End: 
-        <select
+        <select id="end"
           onChange={this.handleEndPoint.bind(this)}>
           {this.state.allStations.map( (station, index) =>
             <option 

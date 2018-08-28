@@ -5,6 +5,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { shallow, mount } from 'enzyme';
 
 describe('Tests for Lines component', () => {
+  
   it('Renders Lines from Axios query in Select box by default', (done) => {
     const mock = new MockAdapter(axios);
     // /api/lines returns 2 lines: line1 and line2.
