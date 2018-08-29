@@ -24,16 +24,20 @@ class TripPlanner extends React.Component {
 
 //Get all station names and filter favorites to the top
 
-  fetchNewStations() {
-    $.ajax({
-      type: "GET",
-      url: "/api/stations",
-      success: (result) => {
-        this.filterStations(result)  
-      }
-    }) 
-  }
 
+fetchNewStations() {
+  axios({
+    method: 'get',
+    url: "/api/stations"
+  })
+  .then((response) => {
+    console.log(response.data)
+    this.filterStations(response.data)  
+  })
+  .catch(error => {
+    console.log(error.response)
+  });
+}
   filterStations(result) {
     var sort = result.sort( (x,y) => {
       return y.is_favorite - x.is_favorite

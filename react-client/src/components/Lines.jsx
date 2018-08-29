@@ -22,7 +22,7 @@ class Lines extends React.Component {
       this.changeStateOfLines(response)
     })
     .catch(error => {
-      console.log(error.response)
+      console.log('Error fetching newlines')
     });
   }
 
@@ -46,7 +46,7 @@ class Lines extends React.Component {
       this.changeStateOfStops(response.data);
     })
     .catch(error => {
-      console.log(error.response);
+      console.log('Error fetching info by ID');
     });
   }
 
