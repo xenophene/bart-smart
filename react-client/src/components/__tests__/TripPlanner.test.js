@@ -10,14 +10,17 @@ describe('Tests for TripPlanner', () => {
     const mock = new MockAdapter(axios);
     var data = JSON.stringify({"name":"Dublin/Pleasanton","id":15})
     mock.onGet('/api/stations').reply(200,
-      [{id: 1, name: 'Powell', is_favorite: 1}, {id: 2, name: 'Downtown Berkeley', is_favorite: 0}, {id: 3, name: 'Orinda', is_favorite: 1}])
+      [{id: 1, name: 'Powell', is_favorite: 1}, 
+       {id: 2, name: 'Downtown Berkeley', is_favorite: 0}, 
+       {id: 3, name: 'Orinda', is_favorite: 1}])
     const wrapper = shallow(<TripPlanner />)
     wrapper.update();
     setTimeout(() => {
-      expect(wrapper.find('option[value.id = 4}]')).toHaveText('Powell')        
+      expect(wrapper.find('.selections')).toHaveText('Start:PowellOrindaDowntown BerkeleyEnd:PowellOrindaDowntown BerkeleyGo!')        
       done();
     }, 500);
   })
+
 
 
   
