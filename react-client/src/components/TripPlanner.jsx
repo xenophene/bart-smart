@@ -31,7 +31,6 @@ fetchNewStations() {
     url: "/api/stations"
   })
   .then((response) => {
-    console.log(response.data)
     this.filterStations(response.data)  
   })
   .catch(error => {
@@ -140,7 +139,10 @@ fetchNewStations() {
     for (var i=start; i<=end; i++) {
       nextStopsArr.push(this.state.allStops[i])
     }
-
+    
+    if (nextStopsArr.length < 1) {
+      this.handleTransferStops()
+    } else {
     nextStopsArr.forEach( (elem) => {
       this.state.allStations.forEach( (obj) => {
         if (elem == obj.id) {
@@ -150,6 +152,11 @@ fetchNewStations() {
     });
 
     this.setState({nextStops: nextStopsName})
+    }
+  }
+
+  handleTransferStops() {
+    this.setState({transfer_rendering: true})
   }
 
 //Life cycle

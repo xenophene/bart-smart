@@ -22,7 +22,14 @@ describe('Tests for TripPlanner', () => {
   })
 
 
-
+  it('Renders the list of in between stations', (done) => {
+    const wrapper = shallow(<TripPlanner />)
+    wrapper.find('select #start').simulate('click', {
+      target: { value: 3}
+    });
+    
+    expect(wrapper.find('select #start').length).to.equal(3)
+  })
   
  
 })
