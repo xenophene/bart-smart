@@ -44,7 +44,9 @@ fetchNewStations() {
     this.setState({allStations: sort})
   }
 
-//Functions that handle and get routing from database
+//Functions that handle and get routing from database for direct 
+//It also checks whether to move on to transfer or not
+
 
   handleStartPoint(e) {
     let target = JSON.parse(e.target.value);
@@ -84,7 +86,7 @@ fetchNewStations() {
       });
   }
 
-//Functions that manage data for routint 
+//Functions that manage data for routine
 
   findLines(start, startId, endId) {
     var betterData = this.createBetterDataPackage(start);
@@ -139,8 +141,11 @@ fetchNewStations() {
     for (var i=start; i<=end; i++) {
       nextStopsArr.push(this.state.allStops[i])
     }
-    
-    if (nextStopsArr.length < 1) {
+    console.log('next stops:', nextStopsArr)
+
+    //nextStopsArr for non direct routes return back [undefined]
+
+    if (nextStopsArr[0] === undefined) {
       this.handleTransferStops()
     } else {
     nextStopsArr.forEach( (elem) => {
@@ -155,8 +160,21 @@ fetchNewStations() {
     }
   }
 
+
+
+  //this function is invoked once direct route is no available and transfer comes in
+
   handleTransferStops() {
-    this.setState({transfer_rendering: true})
+    let startingStationId = this.state.startingId;
+    
+    //Axios call to get all the lines that go through the stop
+    axios.get(`/api/stations/allLinesForStop/${startingStationId}`)
+      .then(function (response) {
+        console.log(response)
+      })
+      .catch(function (error) {
+        console.log(error)
+      });
   }
 
 //Life cycle
@@ -237,8 +255,6 @@ fetchNewStations() {
             )}
           </ul>
         </div>
-
-        {this.state.transfer_rendering ? <TransferStations /> : null}
 
         <div className="directions-step">
           <div className="directions-line-header">
