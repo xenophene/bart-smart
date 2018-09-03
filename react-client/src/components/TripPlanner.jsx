@@ -18,7 +18,8 @@ class TripPlanner extends React.Component {
       chosenColor: '',
       allStops: '',
       nextStops: ['Middle Station A', ' Middle Station B', ' Middle Station C'],
-      transfer_rendering: false
+      transfer_rendering: false,
+      transfer_info: ''
     }
   }
 
@@ -170,7 +171,7 @@ fetchNewStations() {
     //Axios call to get all the lines that go through the stop
     axios.get(`/api/stations/allLinesForStop/${startingStationId}`)
       .then(function (response) {
-        console.log(response)
+        this.setState({transfer_info: response.data})
       })
       .catch(function (error) {
         console.log(error)

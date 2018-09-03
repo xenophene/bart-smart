@@ -158,5 +158,6 @@ module.exports = {
   checkCurrentFavs,
   getAllStations,
   handleLevelFive,
-  getAllLineInfo
+  getAllLineInfo,
+  getAllTransferLines
 };
