@@ -147,7 +147,7 @@ fetchNewStations() {
     //nextStopsArr for non direct routes return back [undefined]
 
     if (nextStopsArr[0] === undefined) {
-      this.handleTransferStops()
+      this.handleTransferStops(this.state.startingId)
     } else {
     nextStopsArr.forEach( (elem) => {
       this.state.allStations.forEach( (obj) => {
@@ -165,18 +165,26 @@ fetchNewStations() {
 
   //this function is invoked once direct route is no available and transfer comes in
 
-  handleTransferStops() {
-    let startingStationId = this.state.startingId;
+  handleTransferStops(startingStationId) {
     
     //Axios call to get all the lines that go through the stop
     axios.get(`/api/stations/allLinesForStop/${startingStationId}`)
-      .then(function (response) {
-        this.setState({transfer_info: response.data})
+      .then((response) => {
+        console.log(response.data)
+        this.transformStopFunctions(response.data)
       })
       .catch(function (error) {
         console.log(error)
       });
   }
+
+  transformStopFunctions(response) {
+    console.log('starting', this.state.startingId)
+    console.log('ending', this.state.endingId)
+    console.log(response)
+  }
+
+
 
 //Life cycle
 

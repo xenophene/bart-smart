@@ -132,7 +132,7 @@ const getAllLineInfo = function(lineInfo, cb) {
 
 const getAllTransferLines = function(startingStationId, cb) {
   var arr = [startingStationId];
-  connection.query('SELECT line_id, station_id, is_transfer from stops where line_id in (select line_id from stops where station_id= ?);', arr, (err, data) => {
+  connection.query('SELECT id, line_id, station_id, is_transfer from stops where line_id in (select line_id from stops where station_id= ?);', arr, (err, data) => {
     if (err) {
       console.log('Error getting all lines for starting ID for transfer', err)
     } else {
