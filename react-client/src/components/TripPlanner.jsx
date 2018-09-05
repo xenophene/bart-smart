@@ -148,7 +148,9 @@ fetchNewStations() {
     //nextStopsArr for non direct routes return back [undefined]
 
     if (nextStopsArr[0] === undefined) {
-      this.transformStopFunctions(this.state.startingId)
+      this.getTransitPath(this.state.startingId, [this.state.startingId], (answer) => {
+        console.log(answer);
+      });
     } else {
     nextStopsArr.forEach( (elem) => {
       this.state.allStations.forEach( (obj) => {
@@ -162,44 +164,58 @@ fetchNewStations() {
     }
   }
 
-  //this function is invoked once direct route is no available and transfer comes in
+  // this function is invoked once direct route is no available and transfer
+  // comes in. done is called with the answer.
+  getTransitPath(startId, answer, done) {
 
-  // transformStopFunctions(startId) {
-
-  //   //Axios call to get all the lines that go through the stop
-  //   console.log('TransformStopFunction called', this.state.endingId)
-  //   return axios.get(`/api/stations/allLinesForStop/${startId}`)
-  //   .then((res) => {
-  //     const response = res.data;
-  //     const startIndex = response.map( (obj) => obj.station_id).indexOf(startId)
-
-  //     for (let i=startIndex; i<response.length; i++) {
-  //       console.log(response[i].station_id)
-  //       if (response[i].station_id === this.state.endingId) {
-  //         console.log('Found a line')
-  //         return [startId]
-  //       }
-  //     }
-
-  //     for (let i=startIndex + 1; i<response.length; i++) {
-  //       if (response[i].is_transfer === 1) {
-  //         if (this.state.visited_transfer_stations.indexOf(response[i].station_id) > -1) {
-  //           continue;
-  //         }
-  //         let nvts = this.state.visited_transfer_stations;
-  //         nvts.push(response[i].station_id);
-  //         this.setState({visited_transfer_stations: nvts});
-  //         // console.log(response[i])
-  //         this.transformStopFunctions(response[i].station_id).then((answer) => {
-  //           if (answer.length > 0) {
-  //             return [startId].concat(answer)
-  //           }
-  //         }); 
-  //       }
-  //     }
-  //   return []
-  //   })
-  // };
+    //Axios call to get all the lines that go through the stop
+    axios.get(`/api/stations/allLinesForStop/${startId}`)
+    .then((res) => {
+      const response = res.data;
+      // response is an array of (id, line_id, station_id, is_transfer) items
+      // for all lines going through startId.
+      let perLineStops = {};
+      response.forEach((item) => {
+        if (perLineStops[item.line_id] === undefined) {
+          perLineStops[item.line_id] = [(item.station_id, item.is_transfer)]
+        } else {
+          perLineStops[item.line_id].push((item.station_id, item.is_transfer));
+        }
+      });
+      // loop through these lines one-by-one
+      for (let line in perLineStops) {
+        const lineData = perLineStops[line];
+        let stopId = 0;
+        while (stopId < lineData.length() && lineData[stopId].station_id != startId) {
+          stopId++;
+        }
+        // first try to find endingId in this line itself by continuing the
+        // scan till we reach the end.
+        for (let nextId = stopId + 1; nextId < lineData.length(); nextId++) {
+          if (lineData[nextId].station_id == this.state.endingId) {
+            done(answer.concat([this.state.endingId]));
+            return;
+          }
+        }
+        // since endingId is not found, we have to start branching out.
+        // starting from startId, for every transfer stop including startId
+        // itself, branch out to transfer stop looking for endId and call
+        // done when found.
+        for (let nextId = stopId; nextId < lineData.length(); nextId++) {
+          if (lineData[nextId].is_transfer !== 1) {
+            continue;
+          }
+          // only check for those transfer stops that have not already been
+          // branched out to (i.e. not present in answer)
+          if (answer.indexOf(lineData[nextId].station_id) > -1) {
+            continue;
+          }
+          transformStopFunctions(lineData[nextId].station_id,
+              answer.concat(lineData[nextId].station_id), done);
+        }
+      }
+    })
+  };
 
 
   transformStopFunctions(startId) {
