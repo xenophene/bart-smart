@@ -210,9 +210,9 @@ fetchNewStations() {
         let startIndex = []
         let answer = ''
         let transferStops = []
-        let count = 0;
+        let state = true;
 
-        while (count < 4) {
+        while (state) {
           for (var i=0; i<response.length; i++) {
             if (response[i].station_id === startId) {
             console.log(2)
@@ -238,7 +238,7 @@ fetchNewStations() {
               }
             }
           }
-          count ++
+        
           this.transformStopFunctions(transferStops[0])
         }
         console.log(count)
