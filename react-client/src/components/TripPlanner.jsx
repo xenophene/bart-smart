@@ -210,34 +210,38 @@ fetchNewStations() {
         let startIndex = []
         let answer = ''
         let transferStops = []
+        let count = 0;
 
-        for (var i=0; i<response.length; i++) {
-          if (response[i].station_id === startId) {
-           console.log(2)
-           startIndex.push(i)
-         }
-        }
-        console.log(2.5)
-        for (var i = startIndex[0]; i<response.length; i++) {
-          console.log(3)
-          if (response[i].station_id === this.state.endingId){
-            console.log('Found the line')
-            answer += response[i].line_id
-            return;
+        while (count < 4) {
+          for (var i=0; i<response.length; i++) {
+            if (response[i].station_id === startId) {
+            console.log(2)
+            startIndex.push(i)
           }
-        }
-
-        if (answer.length < 1) {
-          console.log(4)
+          }
+          console.log(2.5)
           for (var i = startIndex[0]; i<response.length; i++) {
-            if (response[i].is_transfer === 1) {
-              transferStops.push(response[i].station_id)
+            console.log(3)
+            if (response[i].station_id === this.state.endingId){
+              console.log('Found the line')
+              answer += response[i].line_id
+              state = false
+              return;
             }
           }
+
+          if (answer.length < 1) {
+            console.log(4)
+            for (var i = startIndex[0]; i<response.length; i++) {
+              if (response[i].is_transfer === 1) {
+                transferStops.push(response[i].station_id)
+              }
+            }
+          }
+          count ++
+          this.transformStopFunctions(transferStops[0])
         }
-        console.log(transferStops)
-        // console.log(5)
-        this.transformStopFunctions(transferStops[0])
+        console.log(count)
       })
   }
 
