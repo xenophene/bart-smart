@@ -148,10 +148,7 @@ fetchNewStations() {
     //nextStopsArr for non direct routes return back [undefined]
 
     if (nextStopsArr[0] === undefined) {
-      this.transformStopFunctions(this.state.startingId).then((ans) => {
-        console.log('Array of all line info:', ans)
-      })
-      
+      this.transformStopFunctions(this.state.startingId)
     } else {
     nextStopsArr.forEach( (elem) => {
       this.state.allStations.forEach( (obj) => {
@@ -165,63 +162,84 @@ fetchNewStations() {
     }
   }
 
-
-
   //this function is invoked once direct route is no available and transfer comes in
 
-  handleTransferStops(startingStationId) {
-    
-    
-  }
+  // transformStopFunctions(startId) {
 
-   transformStopFunctions(startId) {
-    //Axios call to get all the lines that go through the stop
-      return axios.get(`/api/stations/allLinesForStop/${startId}`)
-      .then((res) => {
-        const response = res.data;
-        const startIndex = response.map( (obj) => obj.station_id).indexOf(startId)
-        if (startIndex < 0) {
-          return []
+  //   //Axios call to get all the lines that go through the stop
+  //   console.log('TransformStopFunction called', this.state.endingId)
+  //   return axios.get(`/api/stations/allLinesForStop/${startId}`)
+  //   .then((res) => {
+  //     const response = res.data;
+  //     const startIndex = response.map( (obj) => obj.station_id).indexOf(startId)
+
+  //     for (let i=startIndex; i<response.length; i++) {
+  //       console.log(response[i].station_id)
+  //       if (response[i].station_id === this.state.endingId) {
+  //         console.log('Found a line')
+  //         return [startId]
+  //       }
+  //     }
+
+  //     for (let i=startIndex + 1; i<response.length; i++) {
+  //       if (response[i].is_transfer === 1) {
+  //         if (this.state.visited_transfer_stations.indexOf(response[i].station_id) > -1) {
+  //           continue;
+  //         }
+  //         let nvts = this.state.visited_transfer_stations;
+  //         nvts.push(response[i].station_id);
+  //         this.setState({visited_transfer_stations: nvts});
+  //         // console.log(response[i])
+  //         this.transformStopFunctions(response[i].station_id).then((answer) => {
+  //           if (answer.length > 0) {
+  //             return [startId].concat(answer)
+  //           }
+  //         }); 
+  //       }
+  //     }
+  //   return []
+  //   })
+  // };
+
+
+  transformStopFunctions(startId) {
+    console.log(1)
+    axios.get(`/api/stations/allLinesForStop/${startId}`)
+      .then( (res) => {
+        let response = res.data;
+        let startIndex = []
+        let answer = ''
+        let transferStops = []
+
+        for (var i=0; i<response.length; i++) {
+          if (response[i].station_id === startId) {
+           console.log(2)
+           startIndex.push(i)
+         }
         }
-
-    for (let i=startIndex; i<response.length; i++) {
-      console.log(response[i].station_id)
-      if (response[i].station_id === this.state.endingId) {
-        console.log('Found a line')
-        return [startId]
-      }
-    }
-
-    for (let i=startIndex + 1; i<response.length; i++) {
-      if (response[i].is_transfer === 1) {
-        if (this.state.visited_transfer_stations.indexOf(response[i].station_id) > -1) {
-          continue;
-        }
-        let nvts = this.state.visited_transfer_stations;
-        nvts.push(response[i].station_id);
-        this.setState({visited_transfer_stations: nvts});
-        // console.log(response[i])
-        this.transformStopFunctions(response[i].station_id).then((answer) => {
-          if (answer.length > 0) {
-            return [startId].concat(answer)
+        console.log(2.5)
+        for (var i = startIndex[0]; i<response.length; i++) {
+          console.log(3)
+          if (response[i].station_id === this.state.endingId){
+            console.log('Found the line')
+            answer += response[i].line_id
+            return;
           }
-        });
-        
-      }
-    }
-    return []
-    })
-      // .catch(function (error) {
-      //   console.log(error)
-      // });
+        }
 
-    // const newStation = '';
-    // const newLine = '';
-    
-
+        if (answer.length < 1) {
+          console.log(4)
+          for (var i = startIndex[0]; i<response.length; i++) {
+            if (response[i].is_transfer === 1) {
+              transferStops.push(response[i].station_id)
+            }
+          }
+        }
+        console.log(transferStops)
+        // console.log(5)
+        this.transformStopFunctions(transferStops[0])
+      })
   }
-
-
 
 //Life cycle
 
