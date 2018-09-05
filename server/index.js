@@ -88,6 +88,18 @@ app.get('/finalLine/:lineInfo', (req, res) => {
   })
 })
 
+//TRANSFORM WORKS BEGIN
+
+app.get('/api/stations/allLinesForStop/:startingStationId', (req, res) => {
+  db.getAllTransferLines(req.params.startingStationId, (err, data) => {
+    if (err) {
+      console.log('Error getting TransferLines Info')
+    } else {
+      res.send(data)
+    }
+  })
+})
+
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);

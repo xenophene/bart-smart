@@ -128,6 +128,19 @@ const getAllLineInfo = function(lineInfo, cb) {
   })
 };
 
+//TRANSFER WORK BEGINS
+
+const getAllTransferLines = function(startingStationId, cb) {
+  var arr = [startingStationId];
+  connection.query('SELECT id, line_id, station_id, is_transfer from stops where line_id in (select line_id from stops where station_id= ?);', arr, (err, data) => {
+    if (err) {
+      console.log('Error getting all lines for starting ID for transfer', err)
+    } else {
+      cb(null, data)
+    }
+  });
+};
+
 //tests to check if the methods are working
 //getAllLines(() => console.log('getAllLines working'))
   //getAllStops(5, () => console.log('getAllStops working'))
@@ -145,5 +158,6 @@ module.exports = {
   checkCurrentFavs,
   getAllStations,
   handleLevelFive,
-  getAllLineInfo
+  getAllLineInfo,
+  getAllTransferLines
 };

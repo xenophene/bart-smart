@@ -18,22 +18,27 @@ class TripPlanner extends React.Component {
       chosenColor: '',
       allStops: '',
       nextStops: ['Middle Station A', ' Middle Station B', ' Middle Station C'],
-      transfer_rendering: false
+      transfer_rendering: false,
+      transfer_info: '',
+      visited_transfer_stations: []
     }
   }
 
 //Get all station names and filter favorites to the top
 
-  fetchNewStations() {
-    $.ajax({
-      type: "GET",
-      url: "/api/stations",
-      success: (result) => {
-        this.filterStations(result)  
-      }
-    }) 
-  }
 
+fetchNewStations() {
+  axios({
+    method: 'get',
+    url: "/api/stations"
+  })
+  .then((response) => {
+    this.filterStations(response.data)  
+  })
+  .catch(error => {
+    console.log(error.response)
+  });
+}
   filterStations(result) {
     var sort = result.sort( (x,y) => {
       return y.is_favorite - x.is_favorite
@@ -41,7 +46,9 @@ class TripPlanner extends React.Component {
     this.setState({allStations: sort})
   }
 
-//Functions that handle and get routing from database
+//Functions that handle and get routing from database for direct 
+//It also checks whether to move on to transfer or not
+
 
   handleStartPoint(e) {
     let target = JSON.parse(e.target.value);
@@ -81,7 +88,7 @@ class TripPlanner extends React.Component {
       });
   }
 
-//Functions that manage data for routint 
+//Functions that manage data for routine
 
   findLines(start, startId, endId) {
     var betterData = this.createBetterDataPackage(start);
@@ -136,7 +143,13 @@ class TripPlanner extends React.Component {
     for (var i=start; i<=end; i++) {
       nextStopsArr.push(this.state.allStops[i])
     }
+    console.log('next stops:', nextStopsArr)
 
+    //nextStopsArr for non direct routes return back [undefined]
+
+    if (nextStopsArr[0] === undefined) {
+      this.transformStopFunctions(this.state.startingId)
+    } else {
     nextStopsArr.forEach( (elem) => {
       this.state.allStations.forEach( (obj) => {
         if (elem == obj.id) {
@@ -146,6 +159,90 @@ class TripPlanner extends React.Component {
     });
 
     this.setState({nextStops: nextStopsName})
+    }
+  }
+
+  //this function is invoked once direct route is no available and transfer comes in
+
+  // transformStopFunctions(startId) {
+
+  //   //Axios call to get all the lines that go through the stop
+  //   console.log('TransformStopFunction called', this.state.endingId)
+  //   return axios.get(`/api/stations/allLinesForStop/${startId}`)
+  //   .then((res) => {
+  //     const response = res.data;
+  //     const startIndex = response.map( (obj) => obj.station_id).indexOf(startId)
+
+  //     for (let i=startIndex; i<response.length; i++) {
+  //       console.log(response[i].station_id)
+  //       if (response[i].station_id === this.state.endingId) {
+  //         console.log('Found a line')
+  //         return [startId]
+  //       }
+  //     }
+
+  //     for (let i=startIndex + 1; i<response.length; i++) {
+  //       if (response[i].is_transfer === 1) {
+  //         if (this.state.visited_transfer_stations.indexOf(response[i].station_id) > -1) {
+  //           continue;
+  //         }
+  //         let nvts = this.state.visited_transfer_stations;
+  //         nvts.push(response[i].station_id);
+  //         this.setState({visited_transfer_stations: nvts});
+  //         // console.log(response[i])
+  //         this.transformStopFunctions(response[i].station_id).then((answer) => {
+  //           if (answer.length > 0) {
+  //             return [startId].concat(answer)
+  //           }
+  //         }); 
+  //       }
+  //     }
+  //   return []
+  //   })
+  // };
+
+
+  transformStopFunctions(startId) {
+    console.log(1)
+    axios.get(`/api/stations/allLinesForStop/${startId}`)
+      .then( (res) => {
+        let response = res.data;
+        let startIndex = []
+        let answer = ''
+        let transferStops = []
+        let state = true;
+
+        while (state) {
+          for (var i=0; i<response.length; i++) {
+            if (response[i].station_id === startId) {
+            console.log(2)
+            startIndex.push(i)
+          }
+          }
+          console.log(2.5)
+          for (var i = startIndex[0]; i<response.length; i++) {
+            console.log(3)
+            if (response[i].station_id === this.state.endingId){
+              console.log('Found the line')
+              answer += response[i].line_id
+              state = false
+              return;
+            }
+          }
+
+          if (answer.length < 1) {
+            console.log(4)
+            for (var i = startIndex[0]; i<response.length; i++) {
+              if (response[i].is_transfer === 1) {
+                transferStops.push(response[i].station_id)
+              }
+            }
+          }
+        
+          this.transformStopFunctions(transferStops[0])
+        }
+        console.log(count)
+      })
   }
 
 //Life cycle
@@ -166,7 +263,7 @@ class TripPlanner extends React.Component {
       <div className="selections">
       
         Start: 
-        <select
+        <select id="start"
           onChange={this.handleStartPoint.bind(this)}>
           {this.state.allStations.map( (station, index) =>
             <option 
@@ -181,7 +278,7 @@ class TripPlanner extends React.Component {
         <br />
 
         End: 
-        <select
+        <select id="end"
           onChange={this.handleEndPoint.bind(this)}>
           {this.state.allStations.map( (station, index) =>
             <option 
@@ -226,8 +323,6 @@ class TripPlanner extends React.Component {
             )}
           </ul>
         </div>
-
-        {this.state.transfer_rendering ? <TransferStations /> : null}
 
         <div className="directions-step">
           <div className="directions-line-header">

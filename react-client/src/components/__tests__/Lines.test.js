@@ -5,6 +5,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { shallow, mount } from 'enzyme';
 
 describe('Tests for Lines component', () => {
+
   it('Renders Lines from Axios query in Select box by default', (done) => {
     const mock = new MockAdapter(axios);
     // /api/lines returns 2 lines: line1 and line2.
@@ -77,7 +78,7 @@ describe('Tests for Lines component', () => {
       expect(wrapper.find(".lines-stop-list ul li[value='2']")).toHaveText('Stop2  ❤ ');
     });
     process.nextTick(() => {
-      wrapper.find(".lines-stop-list ul li[value='1']").simulate('click', {
+      wrapper.find(".lines-stop-list ul li[value='2']").simulate('click', {
         target: { value: '1' }
       });
     });
