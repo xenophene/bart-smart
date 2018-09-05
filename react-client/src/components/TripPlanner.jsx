@@ -19,7 +19,8 @@ class TripPlanner extends React.Component {
       allStops: '',
       nextStops: ['Middle Station A', ' Middle Station B', ' Middle Station C'],
       transfer_rendering: false,
-      transfer_info: ''
+      transfer_info: '',
+      visited_transfer_stations: []
     }
   }
 
@@ -147,7 +148,10 @@ fetchNewStations() {
     //nextStopsArr for non direct routes return back [undefined]
 
     if (nextStopsArr[0] === undefined) {
-      this.handleTransferStops(this.state.startingId)
+      this.transformStopFunctions(this.state.startingId).then((ans) => {
+        console.log('Array of all line info:', ans)
+      })
+      
     } else {
     nextStopsArr.forEach( (elem) => {
       this.state.allStations.forEach( (obj) => {
@@ -167,21 +171,54 @@ fetchNewStations() {
 
   handleTransferStops(startingStationId) {
     
-    //Axios call to get all the lines that go through the stop
-    axios.get(`/api/stations/allLinesForStop/${startingStationId}`)
-      .then((response) => {
-        console.log(response.data)
-        this.transformStopFunctions(response.data)
-      })
-      .catch(function (error) {
-        console.log(error)
-      });
+    
   }
 
-  transformStopFunctions(response) {
-    console.log('starting', this.state.startingId)
-    console.log('ending', this.state.endingId)
-    console.log(response)
+   transformStopFunctions(startId) {
+    //Axios call to get all the lines that go through the stop
+      return axios.get(`/api/stations/allLinesForStop/${startId}`)
+      .then((res) => {
+        const response = res.data;
+        const startIndex = response.map( (obj) => obj.station_id).indexOf(startId)
+        if (startIndex < 0) {
+          return []
+        }
+
+    for (let i=startIndex; i<response.length; i++) {
+      console.log(response[i].station_id)
+      if (response[i].station_id === this.state.endingId) {
+        console.log('Found a line')
+        return [startId]
+      }
+    }
+
+    for (let i=startIndex + 1; i<response.length; i++) {
+      if (response[i].is_transfer === 1) {
+        if (this.state.visited_transfer_stations.indexOf(response[i].station_id) > -1) {
+          continue;
+        }
+        let nvts = this.state.visited_transfer_stations;
+        nvts.push(response[i].station_id);
+        this.setState({visited_transfer_stations: nvts});
+        // console.log(response[i])
+        this.transformStopFunctions(response[i].station_id).then((answer) => {
+          if (answer.length > 0) {
+            return [startId].concat(answer)
+          }
+        });
+        
+      }
+    }
+    return []
+    })
+      // .catch(function (error) {
+      //   console.log(error)
+      // });
+
+    // const newStation = '';
+    // const newLine = '';
+    
+
   }
 
 
